@@ -77,4 +77,43 @@
                 <option value="quarterly">Quarterly</option>
             </select>
 
-            <button type="submit">Submit
+            <button type="submit">Submit</button>
+        </form>
+
+        <p id="status"></p>
+    </div>
+
+<script>
+document.getElementById("subscriptionForm").addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const data = {
+        name: document.getElementById("name").value,
+        email: document.getElementById("email").value,
+        subscriptionType: document.getElementById("subscriptionType").value,
+        frequency: document.getElementById("frequency").value
+    };
+
+    try {
+        const response = await fetch("https://den.ec2.alluvium.net/webhook-test/subscription-form", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        });
+
+        if (response.ok) {
+            document.getElementById("status").innerText = "Submitted successfully!";
+        } else {
+            document.getElementById("status").innerText = "Submission failed.";
+        }
+    } catch (error) {
+        document.getElementById("status").innerText = "Network error. Check console.";
+        console.error(error);
+    }
+});
+</script>
+
+</body>
+</html>
